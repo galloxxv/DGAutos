@@ -1,3 +1,5 @@
+import SectionTitle from "./SectionTitle";
+
 function Services() {
     const services = [
         {
@@ -19,15 +21,14 @@ function Services() {
     ];
 
     return (
-        <section className="bg-[#181818] py-20 text-white">
+        <section id="services" className="bg-[#181818] py-20 text-white">
             <div className="mx-auto max-w-7x1 px-6">
-                <h2 className="mb-4 text-center text-4xl font-bold">
-                    Our Services
-                </h2>
-
-                <p className="mb-12 text-center text-gray-400">
-                    Complete automotive repair solutions under one roof
-                    </p>
+               <SectionTitle
+               eyebrow="Our Services"
+               title="Complete Automotive Repair"
+               description="Everything you need under one roof."
+               />
+            "
 
                 <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                     {services.map((service) => (

@@ -28,7 +28,7 @@ function WhyChooseUs() {
     ];
 
     return (
-        <section className="bg-[#111111] py-20 text-white">
+        <section id="about" className="bg-[#111111] py-20 text-white">
             <div className="mx-auto max-w-7xl px-6">
                 <p className="mb-3 font-semibold uppercase tracking-[.25em] text-red-500">
                     Why Choose Us

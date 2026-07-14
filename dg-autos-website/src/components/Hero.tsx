@@ -1,9 +1,13 @@
+import Button from "./Button";
+
 function Hero() {
   return (
-    <section id="home" className="relative flex min-h-screen items-center overflow-hidden bg-[#080808] px-6 pt-24 text-white">
+    <section
+      id="home"
+      className="relative flex min-h-screen items-center overflow-hidden bg-[linear-gradient(rgba(0,0,0,0.72),rgba(0,0,0,0.9)),url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2000&q=85')] bg-cover bg-center px-6 pt-24 text-white"
+    >
       {/* Background effects */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right, rgba(220,38,38,0.25), transparent_35%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.9))]" />
+      
 
       <div className="relative z-10 mx-auto w-full max-w-7xl">
         <div className="max-w-4xl">
@@ -23,18 +27,13 @@ function Hero() {
           </p>
 
           <div className="flex flex-col gap-4 sm:flex-row">
-            <a
-              href="#contact"
-              className="rounded-lg bg-red-600 px-8 py-4 text-center text-lg font-bold transition hover:bg-red-700"
-            >
-              Get Free Estimate
-            </a>
-            <a
-              href="tel:832203236"
-              className="rounded-lg border border-white px-8 py-4 text-center text-lg font-bold transition hover:bg-white hover:text-black"
-            >
-              Call (832) 203-2136
-            </a>
+           <Button href="#contact">
+            Get Free Estimate
+
+            <Button href="tel:8322032136" variant="secondary">
+            Call (832) 203-2136
+            </Button>
+           </Button>
           </div>
 
           <div className="mt-14 grid max-w-2xl grid-cols-2 gap-6 border-t border-gray-800 pt-8 sm:grid-cols-4">

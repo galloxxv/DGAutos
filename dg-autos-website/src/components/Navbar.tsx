@@ -1,22 +1,32 @@
 function Navbar() {
     return (
-        <header className="fixed top-0 left-0 w-full bg-black/80 backdrop-blur-md border-b border-gray-800 z-50">
+        <header className="fixed left-0 top-0 z-50 w-full border-b border-white/10 bg-black/30 backdrop-blur-xl transition-all duration-300">
             <div className="flex items-center justify-between px-6 py-4">
-                <h1 className="text-3xl font-extrabold text-red-600">DG AUTOS</h1>
+                <div>
+<h1 className="text-3xl font-black tracking-widest text-white">
+DG <span className="text-red-600">AUTOS</span>
+</h1>
+
+<p className="text-xs uppercase tracking-[0.3em] text-gray-400">
+Body • Paint • Mechanical
+</p>
+</div>
 
                 <nav className="hidden md:flex gap-8 text-white">
-                    <a href="#" className="hover:text-red-500">Home</a>
-                    <a href="#" className="hover:text-red-500">Services</a>
-                    <a href="#" className="hover:text-red-500">Gallery</a>
-                    <a href="#" className="hover:text-red-500">About</a>
-                    <a href="#" className="hover:text-red-500">Contact</a>
+                    <a href="#home" className="hover:text-red-500">Home</a>
+                    <a href="#services" className="hover:text-red-500">Services</a>
+                    <a href="#gallery" className="hover:text-red-500">Gallery</a>
+                    <a href="#about" className="hover:text-red-500">About</a>
+                    <a href="#contact" className="hover:text-red-500">Contact</a>
                 </nav>
 
-                <button className="bg-red-600 px-5 py-2 rounded-lg hover:bg-red-700 transition">
+                <a href="#contact"
+                className="rounded-lg bg-red-600 px-5 py-2 font-semibold transition hover:bg-red-700"
+                >
                     Free Estimate
-                </button>
+                </a>
             </div>
-        </header>
+        </header> 
     )
 }
 
