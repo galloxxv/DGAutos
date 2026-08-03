@@ -1,10 +1,10 @@
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 
 const phoneDisplay = "(832) 203-2136";
 const phoneNumber = "8322032136";
-const financingUrl = String(import.meta.env.VITE_FINANCING_URL || "https://buy.stripe.com/9B6eVd7Xqf3zciz7emabK00").trim();
-const financingMessage = encodeURIComponent("Hi DG Autos, I would like to apply for financing for my vehicle repair. Please send me the application details.");
-const financingHref = financingUrl || `sms:${phoneNumber}?&body=${financingMessage}`;
+const supabaseUrl = String(import.meta.env.VITE_SUPABASE_URL || "https://qrxyyguimdppdbvwtnuk.supabase.co").trim();
+const supabaseKey = String(import.meta.env.VITE_SUPABASE_ANON_KEY || import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || "sb_publishable_v4pF36D-wDZCt_KDunc-EA_g4irwilz").trim();
+const financingEndpoint = `${supabaseUrl}/functions/v1/create-financing-checkout`;
 
 const services = [
   { icon: "◆", title: "Collision Repair", text: "Body repair, panel replacement, dent repair, structural correction, and professional refinishing." },
@@ -32,6 +32,15 @@ const highlights = [
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [message, setMessage] = useState("");
+  const [financingMessage, setFinancingMessage] = useState("");
+  const [financingError, setFinancingError] = useState("");
+  const [creatingCheckout, setCreatingCheckout] = useState(false);
+
+  useEffect(() => {
+    const result = new URLSearchParams(window.location.search).get("financing");
+    if (result === "success") setFinancingMessage("Payment completed successfully. DG Autos will confirm the payment with your repair estimate.");
+    if (result === "cancelled") setFinancingMessage("Checkout was cancelled. No payment was completed.");
+  }, []);
 
   function submitEstimate(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,6 +52,53 @@ function App() {
     const body = `Hi DG Autos, my name is ${name}. My phone number is ${phone}. Vehicle: ${vehicle}. Repair needed: ${repair}`;
     window.location.href = `sms:${phoneNumber}?&body=${encodeURIComponent(body)}`;
     setMessage("Your phone's message app should open with the estimate request ready to send.");
+  }
+
+  async function submitFinancing(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setFinancingError("");
+    setFinancingMessage("");
+
+    const data = new FormData(event.currentTarget);
+    const customer = String(data.get("financeName") || "").trim();
+    const vehicle = String(data.get("financeVehicle") || "").trim();
+    const estimateNumber = String(data.get("estimateNumber") || "").trim();
+    const amount = Number(data.get("financeAmount"));
+
+    if (!customer || !vehicle || !estimateNumber || !Number.isFinite(amount) || amount < 50) {
+      setFinancingError("Enter your name, vehicle, estimate number, and an approved repair amount of at least $50.");
+      return;
+    }
+
+    setCreatingCheckout(true);
+    try {
+      const response = await fetch(financingEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`,
+        },
+        body: JSON.stringify({
+          invoiceId: `website-${estimateNumber}-${Date.now()}`,
+          invoiceNumber: estimateNumber,
+          customer,
+          vehicle,
+          amount,
+          returnUrl: window.location.origin,
+        }),
+      });
+
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(result?.error || `Unable to start financing checkout (${response.status}).`);
+      if (!result?.url) throw new Error("Stripe did not return a checkout link.");
+
+      window.location.assign(String(result.url));
+    } catch (error) {
+      setFinancingError(error instanceof Error ? error.message : "Unable to start financing checkout.");
+    } finally {
+      setCreatingCheckout(false);
+    }
   }
 
   return (
@@ -109,12 +165,17 @@ function App() {
         <section className="section process-section"><div className="container"><div className="section-heading"><p className="eyebrow">Simple process</p><h2>From estimate to finished repair</h2></div><div className="process-grid">{process.map(([number,title,text]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
         <section id="financing" className="finance-banner">
-          <div className="container finance-inner">
-            <div><p className="eyebrow">Repair financing</p><h2>Get the repair now and explore flexible payment options</h2><p>Use our secure Stripe checkout to see available payment options, including Affirm when eligible. Approval and terms are provided by Affirm through Stripe.</p></div>
-            <div className="finance-actions">
-              <a className="button button-light" href={financingHref} target="_blank" rel="noreferrer">Apply with Affirm</a>
-              <a className="button button-secondary" href="#contact">Get Repair Estimate</a>
-            </div>
+          <div className="container financing-grid">
+            <div className="finance-copy"><p className="eyebrow">Repair financing</p><h2>Use your approved repair estimate to check out securely</h2><p>Enter the exact amount approved by DG Autos. Stripe will show card payment and Affirm when the transaction and customer are eligible. Approval and payment terms are provided by Affirm through Stripe.</p><ul><li>Use the estimate number provided by DG Autos</li><li>Enter the exact approved repair total</li><li>Complete payment or financing securely on Stripe</li></ul></div>
+            <form className="finance-form" onSubmit={submitFinancing}>
+              <div className="form-row"><label>Name<input name="financeName" required placeholder="Customer name" /></label><label>Estimate number<input name="estimateNumber" required placeholder="Example: EST-1042" /></label></div>
+              <label>Vehicle<input name="financeVehicle" required placeholder="Year, make, and model" /></label>
+              <label>Approved repair amount<input name="financeAmount" required type="number" min="50" step="0.01" inputMode="decimal" placeholder="Example: 2850.00" /></label>
+              <button className="button button-light" type="submit" disabled={creatingCheckout}>{creatingCheckout ? "Opening secure checkout…" : "Continue to Payment & Affirm"}</button>
+              {financingMessage && <p className="finance-success">{financingMessage}</p>}
+              {financingError && <p className="finance-error">{financingError}</p>}
+              <small>Only use an amount confirmed by DG Autos. Financing is subject to eligibility and approval.</small>
+            </form>
           </div>
         </section>
 
