@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 
 const phoneDisplay = "(832) 203-2136";
 const phoneNumber = "8322032136";
-const financingUrl = String(import.meta.env.VITE_FINANCING_URL || "").trim();
+const financingUrl = String(import.meta.env.VITE_FINANCING_URL || "https://buy.stripe.com/9B6eVd7Xqf3zciz7emabK00").trim();
 const financingMessage = encodeURIComponent("Hi DG Autos, I would like to apply for financing for my vehicle repair. Please send me the application details.");
 const financingHref = financingUrl || `sms:${phoneNumber}?&body=${financingMessage}`;
 
@@ -110,9 +110,9 @@ function App() {
 
         <section id="financing" className="finance-banner">
           <div className="container finance-inner">
-            <div><p className="eyebrow">Repair financing</p><h2>Get the repair now and explore flexible payment options</h2><p>{financingUrl ? "Use our secure financing application to see available payment options. Approval and terms are provided by the financing company." : "Start your financing request by texting DG Autos. We will send the current secure lender application and help you connect it to your estimate."}</p></div>
+            <div><p className="eyebrow">Repair financing</p><h2>Get the repair now and explore flexible payment options</h2><p>Use our secure Stripe checkout to see available payment options, including Affirm when eligible. Approval and terms are provided by Affirm through Stripe.</p></div>
             <div className="finance-actions">
-              <a className="button button-light" href={financingHref} target={financingUrl ? "_blank" : undefined} rel={financingUrl ? "noreferrer" : undefined}>{financingUrl ? "Apply for Financing" : "Start Financing Request"}</a>
+              <a className="button button-light" href={financingHref} target="_blank" rel="noreferrer">Apply with Affirm</a>
               <a className="button button-secondary" href="#contact">Get Repair Estimate</a>
             </div>
           </div>
