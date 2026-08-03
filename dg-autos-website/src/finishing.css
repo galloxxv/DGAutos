@@ -1,0 +1,29 @@
+.work-card-two{
+  background-image:url('https://images.pexels.com/photos/6870314/pexels-photo-6870314.jpeg?auto=compress&cs=tinysrgb&w=1400');
+  background-position:center;
+}
+
+.finance-actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:12px;
+}
+
+.button-light{
+  background:#fff;
+  color:#8e1111;
+}
+
+.button-light:hover{
+  background:#f8e7e7;
+  transform:translateY(-2px);
+}
+
+@media(max-width:980px){
+  .finance-actions{justify-content:flex-start;}
+}
+
+@media(max-width:640px){
+  .finance-actions,.finance-actions .button{width:100%;}
+}

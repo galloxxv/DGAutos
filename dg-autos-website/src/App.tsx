@@ -2,6 +2,9 @@ import { useState, type FormEvent } from "react";
 
 const phoneDisplay = "(832) 203-2136";
 const phoneNumber = "8322032136";
+const financingUrl = String(import.meta.env.VITE_FINANCING_URL || "").trim();
+const financingMessage = encodeURIComponent("Hi DG Autos, I would like to apply for financing for my vehicle repair. Please send me the application details.");
+const financingHref = financingUrl || `sms:${phoneNumber}?&body=${financingMessage}`;
 
 const services = [
   { icon: "◆", title: "Collision Repair", text: "Body repair, panel replacement, dent repair, structural correction, and professional refinishing." },
@@ -21,7 +24,7 @@ const highlights = [
   "Body, paint, and mechanical work in one shop",
   "Free estimates with straightforward recommendations",
   "Insurance and customer-pay repairs welcome",
-  "Financing-ready checkout for approved customers",
+  "Financing options for qualified customers",
   "English and Spanish service",
   "Locally owned Houston repair shop",
 ];
@@ -51,7 +54,7 @@ function App() {
         </a>
         <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle navigation" aria-expanded={menuOpen}>☰</button>
         <nav className={menuOpen ? "nav-links nav-open" : "nav-links"}>
-          {["home", "services", "about", "work", "contact"].map((item) => (
+          {["home", "services", "about", "work", "financing", "contact"].map((item) => (
             <a key={item} href={`#${item}`} onClick={() => setMenuOpen(false)}>{item === "work" ? "Our Work" : item}</a>
           ))}
           <a className="nav-cta" href={`tel:${phoneNumber}`}>Call Now</a>
@@ -67,11 +70,12 @@ function App() {
             <p className="hero-copy">From collision repair and paintwork to mechanical service, DG Autos gives Houston drivers one dependable place to restore, repair, and maintain their vehicles.</p>
             <div className="hero-actions">
               <a className="button button-primary" href="#contact">Get a Free Estimate</a>
+              <a className="button button-secondary" href="#financing">Apply for Financing</a>
               <a className="button button-secondary" href={`tel:${phoneNumber}`}>Call {phoneDisplay}</a>
             </div>
             <div className="trust-row">
               <span><strong>Free</strong> estimates</span>
-              <span><strong>One shop</strong> complete service</span>
+              <span><strong>Financing</strong> options available</span>
               <span><strong>Houston</strong> locally owned</span>
             </div>
           </div>
@@ -96,7 +100,7 @@ function App() {
             <div className="section-heading"><p className="eyebrow">Our work</p><h2>Built around the result that matters</h2><p>Clean body lines, accurate color, dependable repairs, and a vehicle you feel confident driving again.</p></div>
             <div className="work-grid">
               <article className="work-card work-card-one"><div><span>Collision</span><h3>Body restoration</h3><p>Repairing damaged panels and restoring proper fit and finish.</p></div></article>
-              <article className="work-card work-card-two"><div><span>Refinish</span><h3>Paint & color match</h3><p>Professional preparation, blending, and refinishing for a clean result.</p></div></article>
+              <article className="work-card work-card-two"><div><span>Refinish</span><h3>Paint & color match</h3><p>Professional preparation, blending, and refinishing inside an automotive paint environment.</p></div></article>
               <article className="work-card work-card-three"><div><span>Mechanical</span><h3>Repair & maintenance</h3><p>Diagnostics and repairs that keep the vehicle safe and dependable.</p></div></article>
             </div>
           </div>
@@ -104,7 +108,15 @@ function App() {
 
         <section className="section process-section"><div className="container"><div className="section-heading"><p className="eyebrow">Simple process</p><h2>From estimate to finished repair</h2></div><div className="process-grid">{process.map(([number,title,text]) => <article key={number}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
-        <section className="finance-banner"><div className="container finance-inner"><div><p className="eyebrow">Payment flexibility</p><h2>Customer financing is coming to DG Autos</h2><p>Our website and checkout are structured to support Affirm, Afterpay, or another financing provider once final merchant approval is completed.</p></div><a className="button button-secondary" href="#contact">Ask About Payment Options</a></div></section>
+        <section id="financing" className="finance-banner">
+          <div className="container finance-inner">
+            <div><p className="eyebrow">Repair financing</p><h2>Get the repair now and explore flexible payment options</h2><p>{financingUrl ? "Use our secure financing application to see available payment options. Approval and terms are provided by the financing company." : "Start your financing request by texting DG Autos. We will send the current secure lender application and help you connect it to your estimate."}</p></div>
+            <div className="finance-actions">
+              <a className="button button-light" href={financingHref} target={financingUrl ? "_blank" : undefined} rel={financingUrl ? "noreferrer" : undefined}>{financingUrl ? "Apply for Financing" : "Start Financing Request"}</a>
+              <a className="button button-secondary" href="#contact">Get Repair Estimate</a>
+            </div>
+          </div>
+        </section>
 
         <section id="contact" className="section contact-section">
           <div className="container contact-grid">
@@ -114,7 +126,7 @@ function App() {
         </section>
       </main>
 
-      <footer><div className="container footer-inner"><div className="brand"><span className="brand-mark">DG</span><span><strong>DG AUTOS</strong><small>Body • Paint • Mechanical</small></span></div><p>© {new Date().getFullYear()} DG Autos. Houston, Texas.</p><div><a href={`tel:${phoneNumber}`}>Call</a><a href="#contact">Estimate</a><a href="#home">Back to top</a></div></div></footer>
+      <footer><div className="container footer-inner"><div className="brand"><span className="brand-mark">DG</span><span><strong>DG AUTOS</strong><small>Body • Paint • Mechanical</small></span></div><p>© {new Date().getFullYear()} DG Autos. Houston, Texas.</p><div><a href={`tel:${phoneNumber}`}>Call</a><a href="#financing">Financing</a><a href="#contact">Estimate</a><a href="#home">Back to top</a></div></div></footer>
       <a className="mobile-call" href={`tel:${phoneNumber}`}>Call DG Autos</a>
     </div>
   );
