@@ -18,11 +18,11 @@ function Hero() {
           <h1 className="mb-6 text-5xl font-black uppercase leading-tight md:text-7xl lg:text-8xl">
             Collision
             <br />
-            Paint. Mechanical.
+            Paint. Mobile.
           </h1>
 
           <p className="mb-10 max-w-2xl text-lg leading-8 text-gray-300 md:text-xl">
-            Professional auto body, paint, collision, and mechanical repair
+            Professional mobile auto body, paint, and collision repair
             services with honest pricing and quality workmanship.
           </p>
 

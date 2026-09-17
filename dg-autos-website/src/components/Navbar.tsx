@@ -8,7 +8,7 @@ DG <span className="text-red-600">AUTOS</span>
 </h1>
 
 <p className="text-xs uppercase tracking-[0.3em] text-gray-400">
-Body • Paint • Mechanical
+Mobile Body • Paint
 </p>
 </div>
 

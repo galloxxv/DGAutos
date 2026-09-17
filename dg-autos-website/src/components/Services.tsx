@@ -11,8 +11,8 @@ function Services() {
             description: "Color matching, dent repair, panel replacement, and professional refinishing."
         },
         {
-            title: "Mechanical Repair",
-            description: "Expert mechanical repair services to keep your vehicle running smoothly."
+            title: "Dent & Cosmetic Repair",
+            description: "Mobile assessment for selected minor dents and cosmetic body damage."
         },
         {
             title: "Insurance Claims",

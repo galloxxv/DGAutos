@@ -109,7 +109,7 @@ Repair needed
 <textarea
 rows={5}
 className="w-full rounded-lg border border-gray-700 bg-[#111111] px-4 py-3 outline-none transition focus:border-red-600"
-placeholder="Describe the damage or mechanical issue"
+placeholder="Describe the body or paint damage"
 />
 </div>
 
